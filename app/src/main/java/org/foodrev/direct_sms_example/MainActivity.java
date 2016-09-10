@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Snackbar.make(view, "sending message: " + message + " to phone number: " + phoneNumber, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                //new SmsSender()
+                //todo make it a class method so we don't need o instantiate, or like a singleton
 
-                sendSMSAfterPermissionsCheck(phoneNumber,message);
             }
         }
         );
@@ -54,49 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void sendSMSAfterPermissionsCheck(String phoneNumber, String message) {
-        int hasSendSMSPermission = ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.SEND_SMS);
-        if (hasSendSMSPermission!= PackageManager.PERMISSION_GRANTED) {
-            String[] permissions = new String[]{Manifest.permission.SEND_SMS};
-            ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
-        }
-        else {
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(phoneNumber, null, message, null, null);
-        }
-    }
 
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(phoneNumber, null, message, null, null);
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
