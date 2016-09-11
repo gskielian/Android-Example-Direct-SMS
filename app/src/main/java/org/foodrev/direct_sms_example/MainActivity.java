@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String phoneNumber;
     private String message;
+    private SmsSender smsSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                phoneNumber = "4154652008";
+                phoneNumber = "4151234567";
                 message = "hi from phone";
 
                 Snackbar.make(view, "sending message: " + message + " to phone number: " + phoneNumber, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                //new SmsSender()
+                smsSender = SmsSender.getFirstInstance(phoneNumber,message,MainActivity.this, MainActivity.this);
+                smsSender.sendSms();
                 //todo make it a class method so we don't need o instantiate, or like a singleton
-
             }
         }
         );

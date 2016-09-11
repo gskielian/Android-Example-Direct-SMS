@@ -14,16 +14,28 @@ import android.widget.Toast;
  * Created by magulo on 9/10/16.
  */
 public class SmsSender extends AppCompatActivity{
+    //for singleton
+    private static SmsSender firstInstance = null;
+
     private String phoneNumber = null;
     private String message = null;
     private Context context = null;
     private Activity activity = null;
 
-    public SmsSender(String phoneNumber, String message, Context context, Activity activity) {
+    private SmsSender(String phoneNumber, String message, Context context, Activity activity) {
         this.phoneNumber = phoneNumber;
         this.message = message;
         this.context = context;
+        this.activity = activity;
     }
+
+    public static synchronized SmsSender getFirstInstance(String phoneNumber, String message, Context context, Activity activity) {
+        if (firstInstance == null ) {
+            firstInstance = new SmsSender(phoneNumber, message, context, activity);
+        }
+        return firstInstance;
+    }
+
 
     public void sendSms() {
         int hasSendSMSPermission = ContextCompat.checkSelfPermission(context,
